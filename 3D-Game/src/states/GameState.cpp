@@ -1,4 +1,5 @@
 #include "GameState.h"
+#include "../Application.h"
 #include <iostream>
 
 GameState::GameState()
@@ -9,12 +10,9 @@ GameState::~GameState()
 {
 }
 
-void GameState::Init()
-{
-}
-
 void GameState::Update()
 {
+	//std::cout << Application::GetDeltaTime() << std::endl;
 }
 
 void GameState::FixedUpdate()
