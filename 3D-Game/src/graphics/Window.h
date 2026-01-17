@@ -19,6 +19,8 @@ public:
 	void PollEvents();
 	void Render();
 
+	void CloseWindow();
+
 	bool GetWindowShouldClose() const;
 
 	GLFWwindow* GetWindowInstance() const { return m_Window; }

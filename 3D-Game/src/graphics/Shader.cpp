@@ -61,6 +61,18 @@ void Shader::SetUniformVec4f(const char* uniformName, float x, float y, float z,
 	glUniform4f(uniformLocation, x, y, z, w);
 }
 
+void Shader::SetUniformMat4f(const char* uniformName, glm::mat4 matrix)
+{
+	int uniformLocation = glGetUniformLocation(m_ShaderProgramID, uniformName);
+	if (uniformLocation == -1)
+	{
+		std::cout << "Uniform: " << uniformName << " does not exist." << std::endl;
+		return;
+	}
+
+	glUniformMatrix4fv(uniformLocation, 1, GL_FALSE, &matrix[0][0]);
+}
+
 void Shader::SetUniform1i(const char* uniformName, int value)
 {
 	int uniformLocation = glGetUniformLocation(m_ShaderProgramID, uniformName);

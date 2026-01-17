@@ -60,6 +60,11 @@ void Window::Render()
 	glfwSwapBuffers(m_Window);
 }
 
+void Window::CloseWindow()
+{
+	glfwSetWindowShouldClose(m_Window, true);
+}
+
 bool Window::GetWindowShouldClose() const
 {
 	return glfwWindowShouldClose(m_Window);

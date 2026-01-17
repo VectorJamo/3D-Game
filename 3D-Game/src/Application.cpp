@@ -8,9 +8,9 @@ double Application::m_DeltaTime = 0.0;
 Application::Application()
 {
 	m_Window = new Window(800, 600, "3D-Game");
-	m_Window->SetClearColor(0.0f, 1.0f, 0.0f, 1.0f);
 
-	StateManager::SetCurrentScene(new GameState());
+	StateManager::SetCurrentScene(new GameState(m_Window));
+	glfwSetInputMode(m_Window->GetWindowInstance(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 Application::~Application()
