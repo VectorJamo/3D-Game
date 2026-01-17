@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="scenes">
+      <UniqueIdentifier>{A602591B-92A4-83F1-7B5F-974567A00A42}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\graphics\Shader.h" />
+    <ClInclude Include="src\graphics\Texture.h" />
+    <ClInclude Include="src\graphics\Window.h" />
+    <ClInclude Include="src\states\GameState.h">
+      <Filter>scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="src\states\StateManager.h">
+      <Filter>scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\stb_image.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\graphics\Shader.cpp" />
+    <ClCompile Include="src\graphics\Texture.cpp" />
+    <ClCompile Include="src\graphics\Window.cpp" />
+    <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\states\GameState.cpp">
+      <Filter>scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="src\states\StateManager.cpp">
+      <Filter>scenes</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

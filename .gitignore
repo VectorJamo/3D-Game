@@ -1,0 +1,7 @@
+.vs/
+bin/
+bin-interm/
+3D-Game.sln
+3D-Game/obj/
+3D-Game/3D-Game.vcxproj
+3D-Game/3D-Game.vcxproj.user
