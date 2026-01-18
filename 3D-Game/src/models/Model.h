@@ -18,5 +18,7 @@ public:
 
 private:
 	void LoadModel(const std::string& path);
+
+	std::vector<std::string> SplitStringBySpace(std::string& str);
 };
 
