@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "Vertex.h"
+#include "../graphics/Shader.h"
 
 class Model
 {
@@ -16,9 +17,12 @@ public:
 	Model(const std::string& path);
 	~Model();
 
+	void Render(Shader* shader);
+
 private:
 	void LoadModel(const std::string& path);
+	void CreateGLBuffers();
 
-	std::vector<std::string> SplitStringBySpace(std::string& str);
+	std::vector<std::string> SplitString(std::string& str, char delim);
 };
 

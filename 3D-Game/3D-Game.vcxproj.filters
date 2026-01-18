@@ -1,53 +1,78 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="scenes">
-      <UniqueIdentifier>{A602591B-92A4-83F1-7B5F-974567A00A42}</UniqueIdentifier>
+    <Filter Include="graphics">
+      <UniqueIdentifier>{36EF08BC-22BC-63C7-4BD5-516F37019955}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="models">
+      <UniqueIdentifier>{2983320E-1525-5DE4-FEDF-7038EA20E434}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="states">
+      <UniqueIdentifier>{398B8A1C-252D-B5F2-0EE8-C846FA283C43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="terrain">
+      <UniqueIdentifier>{9A430BD9-0623-8A74-0F3B-154B7B99F0D5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\graphics\Shader.h" />
-    <ClInclude Include="src\graphics\Texture.h" />
-    <ClInclude Include="src\graphics\Window.h" />
+    <ClInclude Include="src\Application.h" />
+    <ClInclude Include="src\graphics\Camera.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Shader.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Texture.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphics\Window.h">
+      <Filter>graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="src\models\Model.h">
+      <Filter>models</Filter>
+    </ClInclude>
+    <ClInclude Include="src\models\Vertex.h">
+      <Filter>models</Filter>
+    </ClInclude>
     <ClInclude Include="src\states\GameState.h">
-      <Filter>scenes</Filter>
+      <Filter>states</Filter>
     </ClInclude>
     <ClInclude Include="src\states\StateManager.h">
-      <Filter>scenes</Filter>
+      <Filter>states</Filter>
     </ClInclude>
-    <ClInclude Include="utils\stb_image.h" />
-    <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\terrain\Terrain.h" />
-    <ClInclude Include="src\graphics\Camera.h" />
-    <ClInclude Include="src\models\Model.h" />
-    <ClInclude Include="src\models\Vertex.h" />
+    <ClInclude Include="src\terrain\Terrain.h">
+      <Filter>terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="src\objects\Grass.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\graphics\Shader.cpp" />
-    <ClCompile Include="src\graphics\Texture.cpp" />
-    <ClCompile Include="src\graphics\Window.cpp" />
+    <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\glad.c" />
+    <ClCompile Include="src\graphics\Camera.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Shader.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Texture.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphics\Window.cpp">
+      <Filter>graphics</Filter>
+    </ClCompile>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\models\Model.cpp">
+      <Filter>models</Filter>
+    </ClCompile>
     <ClCompile Include="src\states\GameState.cpp">
-      <Filter>scenes</Filter>
+      <Filter>states</Filter>
     </ClCompile>
     <ClCompile Include="src\states\StateManager.cpp">
-      <Filter>scenes</Filter>
+      <Filter>states</Filter>
     </ClCompile>
-    <ClCompile Include="src\Application.cpp" />
-    <ClCompile Include="src\terrain\Terrain.cpp" />
-    <ClCompile Include="src\graphics\Camera.cpp" />
-    <ClCompile Include="src\models\Model.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="res\shaders\vs.glsl" />
-    <None Include="res\shaders\terrain\fs.glsl" />
-    <None Include="res\shaders\terrain\vs.glsl" />
-    <None Include="res\shaders\fs.glsl" />
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="res\images\container.jpg" />
-    <Image Include="res\images\wall.jpg" />
-    <Image Include="res\images\grass.png" />
+    <ClCompile Include="src\terrain\Terrain.cpp">
+      <Filter>terrain</Filter>
+    </ClCompile>
+    <ClCompile Include="src\objects\Grass.cpp" />
   </ItemGroup>
 </Project>

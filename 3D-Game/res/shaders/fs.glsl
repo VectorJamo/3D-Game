@@ -2,7 +2,17 @@
 
 out vec4 color;
 
+in vec2 v_TCoord;
+in vec3 v_Normal;
+
+uniform sampler2D textureUnit;
+
 void main()
 {
-	color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	vec4 sampledColor = texture(textureUnit, v_TCoord);
+	if(sampledColor.w < 0.5f)
+	{
+		discard;
+	}
+	color = sampledColor;
 }

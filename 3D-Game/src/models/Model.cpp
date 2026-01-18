@@ -5,13 +5,24 @@
 #include <iostream>
 #include <fstream>
 
+#include <GLAD/glad.h>
+
 Model::Model(const std::string& path)
 {
 	LoadModel(path);
+	CreateGLBuffers();
 }
 
 Model::~Model()
 {
+}
+
+void Model::Render(Shader* shader)
+{
+	shader->Use();
+	glBindVertexArray(m_VAO);
+
+	glDrawArrays(GL_TRIANGLES, 0, m_Vertices.size());
 }
 
 void Model::LoadModel(const std::string& path) 
@@ -44,7 +55,7 @@ void Model::LoadModel(const std::string& path)
 			if (line[1] == 'n')
 			{
 				// Normal
-				std::vector<std::string> sNormal = SplitStringBySpace(line);
+				std::vector<std::string> sNormal = SplitString(line, ' ');
 
 				glm::vec3 normal;
 				normal.x = std::stof(sNormal[1]); // skip index 0
@@ -55,7 +66,7 @@ void Model::LoadModel(const std::string& path)
 			}
 			else if (line[1] == 't') {
 				// TextCoord
-				std::vector<std::string> sTCoord = SplitStringBySpace(line);
+				std::vector<std::string> sTCoord = SplitString(line, ' ');
 
 				glm::vec2 tCoord;
 				tCoord.x = std::stof(sTCoord[1]); // skip index 0
@@ -65,7 +76,7 @@ void Model::LoadModel(const std::string& path)
 			}
 			else {
 				// Position
-				std::vector<std::string> sPosition = SplitStringBySpace(line);
+				std::vector<std::string> sPosition = SplitString(line, ' ');
 
 				glm::vec3 position;
 				position.x = std::stof(sPosition[1]); // skip index 0
@@ -82,19 +93,53 @@ void Model::LoadModel(const std::string& path)
 	{
 		if (line[0] == 'f')
 		{
+			std::vector<std::string> faces = SplitString(line, ' ');
 
+			for (int i = 1; i < 4; i++)
+			{
+				std::string face = faces[i];
+				std::vector<std::string> faceNums = SplitString(face, '/');
+
+				Vertex vertex;
+				vertex.position = m_Positions[std::stoi(faceNums[0]) - 1];
+				vertex.normal = m_Normals[std::stoi(faceNums[1]) - 1];
+				vertex.tCoord = m_TCoords[std::stoi(faceNums[2]) - 1];
+
+				m_Vertices.push_back(vertex);
+			}
 		}
 	}
 }
 
-std::vector<std::string> Model::SplitStringBySpace(std::string& str)
+void Model::CreateGLBuffers()
+{
+	glGenVertexArrays(1, &m_VAO);
+	glBindVertexArray(m_VAO);
+
+	glGenBuffers(1, &m_VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+	glBufferData(GL_ARRAY_BUFFER, m_Vertices.size() * sizeof(Vertex), &m_Vertices[0], GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), 0);
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)sizeof(glm::vec3));
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)(sizeof(glm::vec3) * 2));
+
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+}
+
+std::vector<std::string> Model::SplitString(std::string& str, char delim)
 {
 	std::vector<std::string> tokens;
 	
 	std::istringstream iss(str);
 	std::string token;
 
-	while (std::getline(iss, token, ' '))
+	while (std::getline(iss, token, delim))
 	{
 		if (!token.empty())
 			tokens.push_back(token);
