@@ -26,7 +26,10 @@ GameState::GameState(Window* window)
 	m_TreeModel = new Model("res/models/Tree.obj");
 
 	// Objects
-	m_Grass = new Grass(50);
+	m_GrassShader = new Shader("res/shaders/grass/vs.glsl", "res/shaders/grass/fs.glsl");
+	m_GrassShader->Use();
+	m_GrassShader->SetUniformMat4f("u_Projection", m_ProjectionMatrix);
+	m_Grass = new Grass(100);
 
 	glEnable(GL_DEPTH_TEST);
 }
@@ -53,6 +56,9 @@ void GameState::Update()
 
 	m_DefaultShader->Use();
 	m_DefaultShader->SetUniformMat4f("u_View", m_Camera->GetViewMatrix());
+
+	m_GrassShader->Use();
+	m_GrassShader->SetUniformMat4f("u_View", m_Camera->GetViewMatrix());
 }
 
 void GameState::FixedUpdate()
@@ -65,14 +71,9 @@ void GameState::Render()
 	for (auto& terrain : m_Terrains)
 		terrain->Render(m_Camera->GetViewMatrix());
 	
-	glm::mat4 translation = glm::mat4(1.0f);
-	m_DefaultShader->Use();
-	m_DefaultShader->SetUniformMat4f("u_Model", translation);
-
 	m_TreeModel->Render(m_DefaultShader);
-
-	translation = glm::translate(translation, glm::vec3(0.0f, 1.0f, -5));
-	m_DefaultShader->SetUniformMat4f("u_Model", translation);
+	
+	m_GrassShader->Use();
 	m_Grass->Render();
 }
 

@@ -7,6 +7,7 @@
 unsigned int Grass::m_VAO;
 unsigned int Grass::m_VBO;
 unsigned int Grass::m_IBO;
+unsigned int Grass::m_TBO;
 
 Grass::Grass(int numInstances)
 	:m_NumInstances(numInstances)
@@ -14,14 +15,14 @@ Grass::Grass(int numInstances)
 	std::srand(std::time(NULL));
 
 	m_Transformations = new glm::mat4[m_NumInstances];
-	int min = -800;
-	int max = 800;
+	int min = -50;
+	int max = 50;
 	for (int i = 0; i < m_NumInstances; i++)
 	{
-		float x = (std::rand() % (max-min)) + min;
+		float x = (std::rand() % (max - min)) + min;
 		float z = (std::rand() % (max - min)) + min;
 
-		glm::vec3 translation = glm::vec3(x, 0.0f, z);
+		glm::vec3 translation = glm::vec3(x, 1.0f, z);
 
 		m_Transformations[i] = glm::mat4(1.0f);
 		m_Transformations[i] = glm::translate(m_Transformations[i], translation);
@@ -41,7 +42,7 @@ void Grass::Render()
 {
 	m_GrassTexture->Bind(0);
 	glBindVertexArray(m_VAO);
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0);
+	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, 0, m_NumInstances);
 }
 
 void Grass::CreateGLBuffers()
@@ -64,12 +65,33 @@ void Grass::CreateGLBuffers()
 	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
+	glGenBuffers(1, &m_TBO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_TBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * m_NumInstances, m_Transformations, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+
 	glEnableVertexAttribArray(0);
 	glEnableVertexAttribArray(1);
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float)*8, 0);
 	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(float)*8, (void*)(sizeof(float)*3));
 	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(float)*8, (void*)(sizeof(float)*6));
+
+	glBindBuffer(GL_ARRAY_BUFFER, m_TBO);
+
+	glEnableVertexAttribArray(3);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4)*4, 0);
+	glEnableVertexAttribArray(4);
+	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4)*4, (void*)(sizeof(glm::vec4)));
+	glEnableVertexAttribArray(5);
+	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4)*4, (void*)(sizeof(glm::vec4)*2));
+	glEnableVertexAttribArray(6);
+	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4)*4, (void*)(sizeof(glm::vec4)*3));
+	glVertexAttribDivisor(3, 1); // Per-instance
+	glVertexAttribDivisor(4, 1); // Per-instance
+	glVertexAttribDivisor(5, 1); // Per-instance
+	glVertexAttribDivisor(6, 1); // Per-instance
 
 	glGenBuffers(1, &m_IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);

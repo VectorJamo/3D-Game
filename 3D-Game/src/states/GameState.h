@@ -33,6 +33,7 @@ private:
 	Model* m_TreeModel;
 
 	// Objects
+	Shader* m_GrassShader;
 	Grass* m_Grass;
 
 public:

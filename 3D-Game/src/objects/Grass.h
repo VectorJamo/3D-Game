@@ -7,7 +7,7 @@
 class Grass
 {
 private:
-	static unsigned int m_VAO, m_VBO, m_IBO;
+	static unsigned int m_VAO, m_VBO, m_IBO, m_TBO; // m_TBO -> Transformation buffer (mat4s)
 
 	int m_NumInstances;
 	glm::mat4* m_Transformations;
