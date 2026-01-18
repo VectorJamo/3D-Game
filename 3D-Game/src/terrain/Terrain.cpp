@@ -1,13 +1,9 @@
 #include "Terrain.h"
 
-Terrain::Terrain(int gridX, int gridZ, glm::mat4 projectionMatrix)
+Terrain::Terrain(int gridX, int gridZ)
 {
 	m_PositionX = gridX * m_TerrainSize;
 	m_PositionZ = gridZ * m_TerrainSize;
-
-	m_TerrainShader = new Shader("res/shaders/terrain/vs.glsl", "res/shaders/terrain/fs.glsl");
-	m_TerrainShader->Use();
-	m_TerrainShader->SetUniformMat4f("u_Projection", projectionMatrix);
 
 	CreateTerrainData();
 	CreateGLBuffers();
@@ -15,9 +11,7 @@ Terrain::Terrain(int gridX, int gridZ, glm::mat4 projectionMatrix)
 
 Terrain::~Terrain()
 {
-	delete m_TerrainShader;
 }
-
 
 void Terrain::CreateTerrainData()
 {
@@ -79,10 +73,8 @@ void Terrain::CreateGLBuffers()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
-void Terrain::Render(glm::mat4& viewMatrix)
+void Terrain::Render()
 {
-	m_TerrainShader->Use();
-	m_TerrainShader->SetUniformMat4f("u_View", viewMatrix);
 	glBindVertexArray(m_VAO);
 
 	glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_SHORT, 0);

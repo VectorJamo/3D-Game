@@ -11,6 +11,9 @@ private:
 	
 	static double m_CurrentTime, m_LastTime, m_DeltaTime;
 
+	static constexpr float m_FpsLogFrequency = 2.0f; // 2 sec
+	double m_FpsLogCounter = 0.0;
+
 public:
 	Application();
 	~Application();
@@ -18,5 +21,8 @@ public:
 	void Run();
 
 	static double GetDeltaTime() { return m_DeltaTime; }
+
+private:
+	void LogFPS();
 };
 

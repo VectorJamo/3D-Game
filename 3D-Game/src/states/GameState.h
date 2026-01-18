@@ -23,18 +23,31 @@ private:
 	Camera* m_Camera;
 
 	// Terrain
+	Shader* m_TerrainShader;
 	Texture* m_GrassTexture;
 
 	std::vector<Terrain*> m_Terrains;
 
 	// Models
+	Texture* m_TreeTexture;
 	Shader* m_DefaultShader;
-
+	
 	Model* m_TreeModel;
+
+	static constexpr int m_NumTrees = 200;
+	glm::mat4 m_TreeTranslations[m_NumTrees];
 
 	// Objects
 	Shader* m_GrassShader;
 	Grass* m_Grass;
+
+	// Misc
+	bool m_IsCursorActive = false;
+
+	// Lighting
+	glm::vec4 m_SkyColor;
+	glm::vec4 m_LightColor;
+	glm::vec3 m_DirectionalLight;
 
 public:
 	GameState(Window* window);

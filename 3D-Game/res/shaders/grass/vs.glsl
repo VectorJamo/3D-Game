@@ -10,6 +10,7 @@ uniform mat4 u_Projection;
 
 out vec2 v_TCoord;
 out vec3 v_Normal;
+out vec3 v_ViewSpacePos;
 
 void main()
 {
@@ -17,4 +18,5 @@ void main()
 
 	v_TCoord = a_TCoord;
 	v_Normal = a_Normal;
+	v_ViewSpacePos = vec3(u_View * a_Model * vec4(a_Position, 1.0f));
 }

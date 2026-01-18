@@ -10,7 +10,6 @@ Application::Application()
 	m_Window = new Window(800, 600, "3D-Game");
 
 	StateManager::SetCurrentScene(new GameState(m_Window));
-	glfwSetInputMode(m_Window->GetWindowInstance(), GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 Application::~Application()
@@ -26,7 +25,9 @@ void Application::Run()
 		m_CurrentTime = glfwGetTime();
 		m_DeltaTime = m_CurrentTime - m_LastTime;
 		m_LastTime = glfwGetTime();
-		
+
+		LogFPS();
+
 		m_Window->PollEvents();
 		m_Window->Clear();
 
@@ -34,5 +35,16 @@ void Application::Run()
 		StateManager::GetCurrentScene()->Render();
 
 		m_Window->Render();
+	}
+}
+
+void Application::LogFPS()
+{
+	m_FpsLogCounter += Application::GetDeltaTime();
+	if (m_FpsLogCounter > m_FpsLogFrequency)
+	{
+		m_FpsLogCounter = 0.0;
+
+		std::cout << "FPS: " << (1.0 / Application::GetDeltaTime()) << std::endl;
 	}
 }

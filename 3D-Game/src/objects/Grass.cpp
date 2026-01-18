@@ -15,16 +15,18 @@ Grass::Grass(int numInstances)
 	std::srand(std::time(NULL));
 
 	m_Transformations = new glm::mat4[m_NumInstances];
-	int min = -50;
-	int max = 50;
+	int min = -300;
+	int max = 300;
 	for (int i = 0; i < m_NumInstances; i++)
 	{
 		float x = (std::rand() % (max - min)) + min;
 		float z = (std::rand() % (max - min)) + min;
+		float rotationAngle = (std::rand() % 360);
 
 		glm::vec3 translation = glm::vec3(x, 1.0f, z);
 
 		m_Transformations[i] = glm::mat4(1.0f);
+		m_Transformations[i] = glm::rotate(m_Transformations[i], glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
 		m_Transformations[i] = glm::translate(m_Transformations[i], translation);
 	}
 

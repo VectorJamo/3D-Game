@@ -25,13 +25,12 @@ private:
 
 	// OpenGL
 	unsigned int m_VAO, m_VBO, m_IBO;
-	Shader* m_TerrainShader;
 
 public:
-	Terrain(int gridX, int gridZ, glm::mat4 projectionMatrix);
+	Terrain(int gridX, int gridZ);
 	~Terrain();
 
-	void Render(glm::mat4& viewMatrix);
+	void Render();
 
 private:
 	void CreateTerrainData();

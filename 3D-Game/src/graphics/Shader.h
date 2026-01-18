@@ -20,6 +20,11 @@ public:
 	void Use();
 
 	void SetUniformVec4f(const char* uniformName, float x, float y, float z, float w);
+	void SetUniformVec3f(const char* uniformName, float x, float y, float z);
+	
+	void SetUniformVec4f(const char* uniformName, glm::vec4& vec);
+	void SetUniformVec3f(const char* uniformName, glm::vec3& vec);
+
 	void SetUniformMat4f(const char* uniformName, glm::mat4 matrix);
 	void SetUniform1i(const char* uniformName, int value);
 

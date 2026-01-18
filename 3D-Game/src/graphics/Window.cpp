@@ -32,6 +32,8 @@ Window::Window(int width, int height, const char* title)
 				glViewport(0, 0, width, height);
 			}
 		}
+		glfwSwapInterval(0);
+		glfwSetInputMode(m_Window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	}
 }
 
