@@ -19,7 +19,7 @@ GameState::GameState(Window* window)
 	m_TerrainShader->Use();
 	m_TerrainShader->SetUniformMat4f("u_Projection", m_ProjectionMatrix);
 
-	m_GrassTexture = new Texture("res/images/grass.png");
+	m_GrassTexture = new Texture("res/images/terrain/grass.png");
 	m_GrassTexture->Bind(0);
 
 	m_Terrains.emplace_back(new Terrain(0, 0));
@@ -28,7 +28,7 @@ GameState::GameState(Window* window)
 	m_Terrains.emplace_back(new Terrain(0, 1));
 
 	// Models
-	m_TreeTexture = new Texture("res/images/tree_atlas.png");
+	m_TreeTexture = new Texture("res/images/terrain/tree_atlas.png");
 
 	m_DefaultShader = new Shader("res/shaders/vs.glsl", "res/shaders/fs.glsl");
 	m_DefaultShader->Use();

@@ -32,7 +32,7 @@ Grass::Grass(int numInstances)
 
 	CreateGLBuffers();
 
-	m_GrassTexture = new Texture("res/images/grassTexture.png");
+	m_GrassTexture = new Texture("res/images/terrain/grassTexture.png");
 }
 
 Grass::~Grass()
