@@ -24,7 +24,7 @@ public:
 	~Camera();
 
 	void Update(int mouseX, int mouseY, double deltaTime);
-	// Yes, there are much better ways to do this but this is just a test camera class....
+
 	void MoveForward(double deltaTime);
 	void MoveBackward(double deltaTime);
 	void MoveLeft(double deltaTime);

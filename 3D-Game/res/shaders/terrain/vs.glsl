@@ -15,7 +15,7 @@ void main()
 {
 	gl_Position = u_Projection * u_View * vec4(a_Position, 1.0f);
 
-	v_TCoord = a_TCoord * 100.0f;
+	v_TCoord = a_TCoord;
 	v_Normal = a_Normal;
 	v_ViewSpacePos = vec3(u_View * vec4(a_Position, 1.0f));
 }

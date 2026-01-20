@@ -45,6 +45,7 @@
     </ClInclude>
     <ClInclude Include="utils\stb_image.h" />
     <ClInclude Include="src\objects\Grass.h" />
+    <ClInclude Include="src\entities\Player.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Application.cpp" />
@@ -75,6 +76,7 @@
       <Filter>terrain</Filter>
     </ClCompile>
     <ClCompile Include="src\objects\Grass.cpp" />
+    <ClCompile Include="src\entities\Player.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="res\shaders\terrain\fs.glsl" />
@@ -93,5 +95,6 @@
     <Image Include="res\images\terrain\grassTexture.png" />
     <Image Include="res\images\terrain\mud.png" />
     <Image Include="res\images\terrain\path.png" />
+    <Image Include="res\images\tree_atlas.png" />
   </ItemGroup>
 </Project>

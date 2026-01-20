@@ -19,8 +19,11 @@ GameState::GameState(Window* window)
 	m_TerrainShader->Use();
 	m_TerrainShader->SetUniformMat4f("u_Projection", m_ProjectionMatrix);
 
+	m_BlendMapTexture = new Texture("res/images/terrain/blendMap.png");
 	m_GrassTexture = new Texture("res/images/terrain/grass.png");
-	m_GrassTexture->Bind(0);
+	m_GrassFlowersTexture = new Texture("res/images/terrain/grassFlowers.png");
+	m_MudTexture = new Texture("res/images/terrain/mud.png");
+	m_PathTexture = new Texture("res/images/terrain/path.png");
 
 	m_Terrains.emplace_back(new Terrain(0, 0));
 	m_Terrains.emplace_back(new Terrain(-1, 0));
@@ -112,8 +115,19 @@ void GameState::FixedUpdate()
 
 void GameState::Render()
 {
-	m_GrassTexture->Bind(0);
+	m_BlendMapTexture->Bind(0);
+	m_GrassTexture->Bind(1);
+	m_GrassFlowersTexture->Bind(2);
+	m_MudTexture->Bind(3);
+	m_PathTexture->Bind(4);
+
 	m_TerrainShader->Use();
+	m_TerrainShader->SetUniform1i("u_BlendMap", 0);
+	m_TerrainShader->SetUniform1i("u_GrassTexture", 1);
+	m_TerrainShader->SetUniform1i("u_GrassFlowersTexture", 2);
+	m_TerrainShader->SetUniform1i("u_MudTexture", 3);
+	m_TerrainShader->SetUniform1i("u_PathTexture", 4);
+
 	for (auto& terrain : m_Terrains)
 		terrain->Render();
 	

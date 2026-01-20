@@ -24,7 +24,7 @@ private:
 
 	// Terrain
 	Shader* m_TerrainShader;
-	Texture* m_GrassTexture;
+	Texture* m_BlendMapTexture, *m_GrassTexture, *m_GrassFlowersTexture, *m_MudTexture, *m_PathTexture;
 
 	std::vector<Terrain*> m_Terrains;
 
