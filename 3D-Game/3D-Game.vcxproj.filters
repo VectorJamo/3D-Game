@@ -43,7 +43,6 @@
     <ClInclude Include="src\terrain\Terrain.h">
       <Filter>terrain</Filter>
     </ClInclude>
-    <ClInclude Include="utils\stb_image.h" />
     <ClInclude Include="src\objects\Grass.h" />
     <ClInclude Include="src\entities\Player.h" />
   </ItemGroup>
@@ -87,14 +86,9 @@
     <None Include="res\shaders\grass\fs.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\images\terrain\blendMap.png" />
-    <Image Include="res\images\terrain\fern.png" />
-    <Image Include="res\images\terrain\flower.png" />
-    <Image Include="res\images\terrain\grass.png" />
-    <Image Include="res\images\terrain\grassFlowers.png" />
-    <Image Include="res\images\terrain\grassTexture.png" />
-    <Image Include="res\images\terrain\mud.png" />
-    <Image Include="res\images\terrain\path.png" />
-    <Image Include="res\images\tree_atlas.png" />
+    <Image Include="res\images\container.jpg" />
+    <Image Include="res\images\grass.png" />
+    <Image Include="res\images\grassTexture.png" />
+    <Image Include="res\images\wall.jpg" />
   </ItemGroup>
 </Project>
