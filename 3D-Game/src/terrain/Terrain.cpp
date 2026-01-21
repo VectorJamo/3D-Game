@@ -23,6 +23,7 @@ Terrain::~Terrain()
 void Terrain::CreateTerrainData()
 {
 	float dVertex = (float)m_TerrainSize / (float)m_VerticesCount;
+	std::cout << dVertex << std::endl;
 
 	// Vertex Data
 	for (int z = 0; z < m_VerticesCount; z++)
@@ -31,7 +32,6 @@ void Terrain::CreateTerrainData()
 		{
 			float bottomLeftX = m_PositionX + x * dVertex;
 			float bottomLeftZ = m_PositionZ - z * dVertex;
-
 
 			// CCW order (bottom left -> top left)
 			m_Vertices.emplace_back(GetTerrainVertexData(bottomLeftX, bottomLeftZ, x, z));
@@ -73,7 +73,7 @@ void Terrain::CreateGLBuffers()
 
 	glGenBuffers(1, &m_IBO);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_IBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Indices.size() * sizeof(unsigned short), &m_Indices[0], GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_Indices.size() * sizeof(unsigned int), &m_Indices[0], GL_STATIC_DRAW);
 
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -82,7 +82,7 @@ void Terrain::CreateGLBuffers()
 
 void Terrain::LoadHeightMap(const std::string& path)
 {
-	stbi_set_flip_vertically_on_load(false);
+	stbi_set_flip_vertically_on_load(true);
 
 	m_HeightMap = stbi_load(path.c_str(), &m_HeightMapWidth, &m_HeightMapHeight, &m_NChannels, 4);
 
@@ -90,20 +90,20 @@ void Terrain::LoadHeightMap(const std::string& path)
 	{
 		std::cout << "Failed to load heightmap" << std::endl;
 	}
-	std::cout << "Width:" << m_HeightMapWidth << std::endl;
-	std::cout << "Height:" << m_HeightMapHeight << std::endl;
-	std::cout << "Num Channels:" << m_NChannels << std::endl;
 }
 
 float Terrain::GetHeightFromHeightMap(int pixelXPos, int pixelYPos)
 {
-	if (pixelXPos > 0 && pixelXPos < 256 && pixelYPos > 0 && pixelYPos < 256)
+	// Here, we ignore the height of the first row and first column of the terrian so that where terrians meet, the height of the blocks that
+	// meet the other terrains is 0.
+	if (pixelXPos >= 1 && pixelXPos <= 255 && pixelYPos >= 1 && pixelYPos <= 255)
 	{
 		int offset = (pixelXPos * 4) + ((pixelYPos * m_HeightMapWidth)*4);
 
 		unsigned char* r = &m_HeightMap[offset];
 		unsigned char* g = &m_HeightMap[offset + 1];
 		unsigned char* b = &m_HeightMap[offset + 2];
+		unsigned char* a = &m_HeightMap[offset + 3];
 
 		float normalized = int(*r) / 255.0f;
 
@@ -118,7 +118,7 @@ void Terrain::Render()
 {
 	glBindVertexArray(m_VAO);
 
-	glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_SHORT, 0);
+	glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);
 }
 
 

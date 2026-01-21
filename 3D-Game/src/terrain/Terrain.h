@@ -24,7 +24,7 @@ private:
 	static constexpr float m_MinHeight = -50.0f;
 
 	std::vector<TerrainVertex> m_Vertices;
-	std::vector<unsigned short> m_Indices;
+	std::vector<unsigned int> m_Indices;
 
 	// Height Map Data
 	unsigned char* m_HeightMap;
