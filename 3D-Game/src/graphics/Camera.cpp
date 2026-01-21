@@ -73,3 +73,13 @@ void Camera::MoveRight(double deltaTime)
 	glm::vec3 m_CameraRight = glm::normalize(glm::cross(m_CamDirection, m_WorldUp));
 	m_CamPosition += ((float)deltaTime * m_CameraMovementSpeed) * m_CameraRight;
 }
+
+void Camera::SetPosition(const glm::vec3& position)
+{
+	m_CamPosition = position;
+}
+
+void Camera::SetDirection(const glm::vec3& direction)
+{
+	m_CamDirection = direction;
+}

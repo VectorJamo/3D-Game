@@ -8,7 +8,10 @@
 class Camera
 {
 private:
-	glm::vec3 m_CamPosition, m_CamDirection;
+	// CamPosition is the position of the camera(player's head)
+	// CamDirection is where the camera is looking at (a normalized vector)
+	// Both to be fetched from the player class
+	glm::vec3 m_CamPosition, m_CamDirection; 
 	glm::mat4 m_ViewMatrix;
 
 	float m_lastMouseX, m_lastMouseY;
@@ -29,6 +32,9 @@ public:
 	void MoveBackward(double deltaTime);
 	void MoveLeft(double deltaTime);
 	void MoveRight(double deltaTime);
+
+	void SetPosition(const glm::vec3& position);
+	void SetDirection(const glm::vec3& direction);
 
 	inline glm::mat4& GetViewMatrix() { return m_ViewMatrix; }
 	inline glm::vec3& GetCameraPosition() { return m_CamPosition; }
