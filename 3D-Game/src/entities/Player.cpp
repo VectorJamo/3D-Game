@@ -29,7 +29,7 @@ void Player::Update(double mouseX, double mouseY, double deltaTime)
 	m_Camera->Update(mouseX, mouseY, deltaTime);
 	m_Direction = m_Camera->GetCameraDirection();
 
-	glm::vec3 moveDirection = glm::vec3(m_Direction.x, 0.0f, m_Direction.z);
+	glm::vec3 moveDirection = glm::vec3(m_Direction.x, m_Direction.y, m_Direction.z);
 
 	glm::vec3 rightVector = glm::cross(moveDirection, m_UpVector);
 

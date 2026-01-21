@@ -1,9 +1,16 @@
 #include "Terrain.h"
 
+#include "../../utils/stb_image.h"
+#include <iostream>
+
+int Terrain::m_VerticesCount;
 Terrain::Terrain(int gridX, int gridZ)
 {
 	m_PositionX = gridX * m_TerrainSize;
 	m_PositionZ = gridZ * m_TerrainSize;
+
+	LoadHeightMap("res/images/terrain/heightmap.png");
+	m_VerticesCount = m_HeightMapHeight;
 
 	CreateTerrainData();
 	CreateGLBuffers();
@@ -15,22 +22,22 @@ Terrain::~Terrain()
 
 void Terrain::CreateTerrainData()
 {
-	int verticesPerAxis = sqrt(m_VerticesCount);
-	float dVertex = m_TerrainSize / verticesPerAxis;
+	float dVertex = (float)m_TerrainSize / (float)m_VerticesCount;
 
 	// Vertex Data
-	for (int z = 0; z < verticesPerAxis; z++)
+	for (int z = 0; z < m_VerticesCount; z++)
 	{
-		for (int x = 0; x < verticesPerAxis; x++)
+		for (int x = 0; x < m_VerticesCount; x++)
 		{
 			float bottomLeftX = m_PositionX + x * dVertex;
 			float bottomLeftZ = m_PositionZ - z * dVertex;
 
+
 			// CCW order (bottom left -> top left)
-			m_Vertices.emplace_back(GetTerrainVertexData(bottomLeftX, bottomLeftZ));
-			m_Vertices.emplace_back(GetTerrainVertexData(bottomLeftX + dVertex, bottomLeftZ));
-			m_Vertices.emplace_back(GetTerrainVertexData(bottomLeftX + dVertex, bottomLeftZ - dVertex));
-			m_Vertices.emplace_back(GetTerrainVertexData(bottomLeftX, bottomLeftZ - dVertex));
+			m_Vertices.emplace_back(GetTerrainVertexData(bottomLeftX, bottomLeftZ, x, z));
+			m_Vertices.emplace_back(GetTerrainVertexData(bottomLeftX + dVertex, bottomLeftZ, x+1, z));
+			m_Vertices.emplace_back(GetTerrainVertexData(bottomLeftX + dVertex, bottomLeftZ - dVertex, x+1, z+1));
+			m_Vertices.emplace_back(GetTerrainVertexData(bottomLeftX, bottomLeftZ - dVertex, x, z+1));
 		}
 	}
 
@@ -73,6 +80,40 @@ void Terrain::CreateGLBuffers()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 
+void Terrain::LoadHeightMap(const std::string& path)
+{
+	stbi_set_flip_vertically_on_load(false);
+
+	m_HeightMap = stbi_load(path.c_str(), &m_HeightMapWidth, &m_HeightMapHeight, &m_NChannels, 4);
+
+	if (m_HeightMap == nullptr)
+	{
+		std::cout << "Failed to load heightmap" << std::endl;
+	}
+	std::cout << "Width:" << m_HeightMapWidth << std::endl;
+	std::cout << "Height:" << m_HeightMapHeight << std::endl;
+	std::cout << "Num Channels:" << m_NChannels << std::endl;
+}
+
+float Terrain::GetHeightFromHeightMap(int pixelXPos, int pixelYPos)
+{
+	if (pixelXPos > 0 && pixelXPos < 256 && pixelYPos > 0 && pixelYPos < 256)
+	{
+		int offset = (pixelXPos * 4) + ((pixelYPos * m_HeightMapWidth)*4);
+
+		unsigned char* r = &m_HeightMap[offset];
+		unsigned char* g = &m_HeightMap[offset + 1];
+		unsigned char* b = &m_HeightMap[offset + 2];
+
+		float normalized = int(*r) / 255.0f;
+
+		float height = (m_MaxHeight - m_MinHeight) * normalized - (std::abs(m_MinHeight));
+
+		return height;
+	}
+	return 0.0f;
+}
+
 void Terrain::Render()
 {
 	glBindVertexArray(m_VAO);
@@ -81,10 +122,12 @@ void Terrain::Render()
 }
 
 
-TerrainVertex Terrain::GetTerrainVertexData(float positionX, float positionZ)
+TerrainVertex Terrain::GetTerrainVertexData(float positionX, float positionZ, int vertexX, int vertexZ)
 {
 	TerrainVertex vertex;
-	vertex.position = glm::vec3(positionX, 0.0f, positionZ);
+	float yPos = GetHeightFromHeightMap(vertexX, vertexZ);
+	
+	vertex.position = glm::vec3(positionX, yPos, positionZ);
 	vertex.normal = glm::vec3(0.0f, 1.0f, 0.0f);
 
 	float xtCoord = positionX / m_TerrainSize;
