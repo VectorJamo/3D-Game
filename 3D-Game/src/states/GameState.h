@@ -11,6 +11,7 @@
 #include "../graphics/Camera.h"
 #include "../models/Model.h"
 #include "../objects/Grass.h"
+#include "../entities/Player.h"
 
 #include <vector>
 
@@ -20,7 +21,8 @@ private:
 	Window* m_Window;
 	glm::mat4 m_ProjectionMatrix;
 	
-	Camera* m_Camera;
+	// Entities
+	Player* m_Player;
 
 	// Terrain
 	Shader* m_TerrainShader;

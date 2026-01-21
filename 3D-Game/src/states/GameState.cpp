@@ -12,8 +12,6 @@ GameState::GameState(Window* window)
 
 	m_ProjectionMatrix = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 500.0f);
 
-	m_Camera = new Camera(glm::vec3(0.0f, 3.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));
-
 	// Terrain
 	m_TerrainShader = new Shader("res/shaders/terrain/vs.glsl", "res/shaders/terrain/fs.glsl");
 	m_TerrainShader->Use();
@@ -76,13 +74,14 @@ GameState::GameState(Window* window)
 	m_GrassShader->SetUniformVec3f("u_DirectionalLight", m_DirectionalLight);
 	m_GrassShader->SetUniformVec4f("u_SkyColor", m_SkyColor);
 
+	// Entities
+	m_Player = new Player(m_Window);
+
 	glEnable(GL_DEPTH_TEST);
 }
 
 GameState::~GameState()
 {
-	delete m_Camera;
-	
 	delete m_DefaultShader;
 	delete m_TreeModel;
 
@@ -97,16 +96,16 @@ void GameState::Update()
 
 	double xpos, ypos;
 	glfwGetCursorPos(m_Window->GetWindowInstance(), &xpos, &ypos);
-	m_Camera->Update(xpos, ypos, Application::GetDeltaTime());
+	m_Player->Update(xpos, ypos, Application::GetDeltaTime());
 
 	m_DefaultShader->Use();
-	m_DefaultShader->SetUniformMat4f("u_View", m_Camera->GetViewMatrix());
+	m_DefaultShader->SetUniformMat4f("u_View", m_Player->GetCamera()->GetViewMatrix());
 
 	m_GrassShader->Use();
-	m_GrassShader->SetUniformMat4f("u_View", m_Camera->GetViewMatrix());
+	m_GrassShader->SetUniformMat4f("u_View", m_Player->GetCamera()->GetViewMatrix());
 
 	m_TerrainShader->Use();
-	m_TerrainShader->SetUniformMat4f("u_View", m_Camera->GetViewMatrix());
+	m_TerrainShader->SetUniformMat4f("u_View", m_Player->GetCamera()->GetViewMatrix());
 }
 
 void GameState::FixedUpdate()
@@ -146,23 +145,6 @@ void GameState::Render()
 
 void GameState::HandleInput()
 {
-	if (glfwGetKey(m_Window->GetWindowInstance(), GLFW_KEY_W) == GLFW_PRESS)
-	{
-		m_Camera->MoveForward(Application::GetDeltaTime());
-	}
-	if (glfwGetKey(m_Window->GetWindowInstance(), GLFW_KEY_A) == GLFW_PRESS)
-	{
-		m_Camera->MoveLeft(Application::GetDeltaTime());
-	}
-	if (glfwGetKey(m_Window->GetWindowInstance(), GLFW_KEY_S) == GLFW_PRESS)
-	{
-		m_Camera->MoveBackward(Application::GetDeltaTime());
-	}
-	if (glfwGetKey(m_Window->GetWindowInstance(), GLFW_KEY_D) == GLFW_PRESS)
-	{
-		m_Camera->MoveRight(Application::GetDeltaTime());
-	}
-
 	if (glfwGetKey(m_Window->GetWindowInstance(), GLFW_KEY_ESCAPE) == GLFW_PRESS)
 	{
 		m_Window->CloseWindow();
