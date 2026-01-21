@@ -44,6 +44,7 @@ GameState::GameState(Window* window)
 
 		glm::vec3 treePosition = glm::vec3(x, 0.0f, z);
 		m_TreeTranslations[i] = glm::mat4(1.0f);
+		m_TreeTranslations[i] = glm::scale(m_TreeTranslations[i], glm::vec3(2.0f, 2.0f, 2.0f));
 		m_TreeTranslations[i] = glm::translate(m_TreeTranslations[i], treePosition);
 	}
 
