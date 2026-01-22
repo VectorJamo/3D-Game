@@ -10,7 +10,10 @@ uniform mat4 u_Projection;
 
 out vec2 v_TCoord;
 out vec3 v_Normal;
-out vec3 v_ViewSpacePos;
+out float v_Visibility;
+
+const float density = 0.007f;
+const float gradient = 1.5f;
 
 void main()
 {
@@ -18,5 +21,12 @@ void main()
 
 	v_TCoord = a_TCoord;
 	v_Normal = a_Normal;
-	v_ViewSpacePos = vec3(u_View * a_Model * vec4(a_Position, 1.0f));
+
+	vec3 viewSpacePos = vec3(u_View * a_Model * vec4(a_Position, 1.0f));
+	float distFromPlayer = length(viewSpacePos);
+
+	float visibility = exp(-pow((distFromPlayer*density), gradient));
+	visibility = clamp(visibility, 0.0f, 1.0f);
+
+	v_Visibility = visibility;
 }

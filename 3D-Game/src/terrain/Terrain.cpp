@@ -94,9 +94,10 @@ void Terrain::LoadHeightMap(const std::string& path)
 
 float Terrain::GetHeightFromHeightMap(int pixelXPos, int pixelYPos)
 {
-	// Here, we ignore the height of the first row and first column of the terrian so that where terrians meet, the height of the blocks that
-	// meet the other terrains is 0.
-	if (pixelXPos >= 1 && pixelXPos <= 255 && pixelYPos >= 1 && pixelYPos <= 255)
+	// Here, we ignore the height of the first & last row and first & last column of the terrian so that the point where terrians meet, 
+	// the height of the vertices that meet at the terrains junctions is 0.
+
+	if (pixelXPos > 0 && pixelXPos < 255 && pixelYPos > 0 && pixelYPos < 255)
 	{
 		int offset = (pixelXPos * 4) + ((pixelYPos * m_HeightMapWidth)*4);
 
