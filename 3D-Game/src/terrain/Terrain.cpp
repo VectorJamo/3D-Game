@@ -12,12 +12,29 @@ Terrain::Terrain(int gridX, int gridZ)
 	LoadHeightMap("res/images/terrain/heightmap.png");
 	m_VerticesCount = m_HeightMapHeight;
 
+	// Shall the compiler optimize this?
+	m_Heights = new float* [m_VerticesCount];
+	for (int i = 0; i < m_VerticesCount; i++)
+	{
+		m_Heights[i] = new float[m_VerticesCount];
+		// Not necessary. But did this for debugging.
+		for (int j = 0; j < m_VerticesCount; j++)
+		{
+			m_Heights[i][j] = 0.0f;
+		}
+	}
+
 	CreateTerrainData();
 	CreateGLBuffers();
 }
 
 Terrain::~Terrain()
 {
+	for (int i = 0; i < m_VerticesCount; i++)
+	{
+		delete[] m_Heights[i];
+	}
+	delete m_Heights;
 }
 
 void Terrain::CreateTerrainData()
@@ -32,6 +49,8 @@ void Terrain::CreateTerrainData()
 		{
 			float bottomLeftX = m_PositionX + x * dVertex;
 			float bottomLeftZ = m_PositionZ - z * dVertex;
+			
+			m_Heights[z][x] = GetHeightFromHeightMap(x, z);
 
 			// CCW order (bottom left -> top left)
 			m_Vertices.emplace_back(GetTerrainVertexData(bottomLeftX, bottomLeftZ, x, z));
@@ -127,9 +146,19 @@ TerrainVertex Terrain::GetTerrainVertexData(float positionX, float positionZ, in
 {
 	TerrainVertex vertex;
 	float yPos = GetHeightFromHeightMap(vertexX, vertexZ);
+
+	// TODO: Calculate Normal
+	float hLeft = GetHeightFromHeightMap(vertexX - 1, vertexZ);
+	float hRight = GetHeightFromHeightMap(vertexX + 1, vertexZ);
+	float hDown = GetHeightFromHeightMap(vertexX, vertexZ - 1);
+	float hUp = GetHeightFromHeightMap(vertexX, vertexZ + 1);
 	
+	float normalX = hLeft - hDown;
+	float normalY = 1.0f; // Hack number? 
+	float normalZ = hUp - hDown;
+
 	vertex.position = glm::vec3(positionX, yPos, positionZ);
-	vertex.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+	vertex.normal = glm::normalize(glm::vec3(normalX, normalY, normalZ));
 
 	float xtCoord = positionX / m_TerrainSize;
 	float ytCoord = positionZ / m_TerrainSize;

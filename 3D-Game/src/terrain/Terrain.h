@@ -26,6 +26,9 @@ private:
 	std::vector<TerrainVertex> m_Vertices;
 	std::vector<unsigned int> m_Indices;
 
+
+	float** m_Heights;
+
 	// Height Map Data
 	unsigned char* m_HeightMap;
 	int m_HeightMapWidth, m_HeightMapHeight, m_NChannels;
