@@ -26,7 +26,6 @@ private:
 	std::vector<TerrainVertex> m_Vertices;
 	std::vector<unsigned int> m_Indices;
 
-
 	float** m_Heights;
 
 	// Height Map Data
@@ -41,6 +40,8 @@ public:
 	~Terrain();
 
 	void Render();
+
+	float GetTerrainHeight(float worldX, float worldZ);
 
 private:
 	void CreateTerrainData();

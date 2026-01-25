@@ -1,8 +1,10 @@
 #pragma once
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <vector>
 
 #include "../graphics/Texture.h"
+#include "../terrain/Terrain.h"
 
 class Grass
 {
@@ -14,8 +16,10 @@ private:
 
 	Texture* m_GrassTexture;
 
+	std::vector<Terrain*>& m_Terrains;
+
 public:
-	Grass(int numInstances);
+	Grass(int numInstances, std::vector<Terrain*>& terrains);
 	~Grass();
 
 	void Render();

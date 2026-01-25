@@ -39,7 +39,7 @@ Terrain::~Terrain()
 
 void Terrain::CreateTerrainData()
 {
-	float dVertex = (float)m_TerrainSize / (float)m_VerticesCount;
+	float dVertex = (float)m_TerrainSize / (float)(m_VerticesCount - 1);
 	std::cout << dVertex << std::endl;
 
 	// Vertex Data
@@ -139,6 +139,28 @@ void Terrain::Render()
 	glBindVertexArray(m_VAO);
 
 	glDrawElements(GL_TRIANGLES, m_Indices.size(), GL_UNSIGNED_INT, 0);
+}
+
+float Terrain::GetTerrainHeight(float worldX, float worldZ)
+{
+	// Get position relative to the terrain
+	float worldTerrainPosX = worldX - m_PositionX;
+	float worldTerrainPosZ = worldZ - m_PositionZ;
+	
+	float gridSquareSize = m_TerrainSize / (float)(m_VerticesCount - 1);
+
+	// Get which vertex is the world position inside the terrain
+	int gridX = worldTerrainPosX / gridSquareSize;
+	int gridZ = -worldTerrainPosZ / gridSquareSize;
+
+	if (gridX < 0 || gridX > m_VerticesCount - 1 || gridZ < 0 || gridZ > m_VerticesCount - 1)
+	{
+		return 0.0f;
+	}
+
+	float height = m_Heights[gridZ][gridX];
+
+	return height;
 }
 
 

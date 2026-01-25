@@ -24,9 +24,9 @@ GameState::GameState(Window* window)
 	m_PathTexture = new Texture("res/images/terrain/path.png");
 
 	m_Terrains.emplace_back(new Terrain(0, 0));
-	m_Terrains.emplace_back(new Terrain(-1, 0));
-	m_Terrains.emplace_back(new Terrain(-1, 1));
-	m_Terrains.emplace_back(new Terrain(0, 1));
+	//m_Terrains.emplace_back(new Terrain(-1, 0));
+	//m_Terrains.emplace_back(new Terrain(-1, 1));
+	//m_Terrains.emplace_back(new Terrain(0, 1));
 
 	// Models
 	m_TreeTexture = new Texture("res/images/tree_atlas.png");
@@ -42,9 +42,9 @@ GameState::GameState(Window* window)
 		float x = (rand() % 600) - 300; // -300 -> 300
 		float z = (rand() % 600) - 300; // -300 -> 300
 
-		glm::vec3 treePosition = glm::vec3(x, 0.0f, z);
+		glm::vec3 treePosition = glm::vec3(x, m_Terrains[0]->GetTerrainHeight(x, z), z);
 		m_TreeTranslations[i] = glm::mat4(1.0f);
-		m_TreeTranslations[i] = glm::scale(m_TreeTranslations[i], glm::vec3(2.0f, 2.0f, 2.0f));
+		m_TreeTranslations[i] = glm::scale(m_TreeTranslations[i], glm::vec3(1.0f, 1.0f, 1.0f));
 		m_TreeTranslations[i] = glm::translate(m_TreeTranslations[i], treePosition);
 	}
 
@@ -52,7 +52,7 @@ GameState::GameState(Window* window)
 	m_GrassShader = new Shader("res/shaders/grass/vs.glsl", "res/shaders/grass/fs.glsl");
 	m_GrassShader->Use();
 	m_GrassShader->SetUniformMat4f("u_Projection", m_ProjectionMatrix);
-	m_Grass = new Grass(5000);
+	m_Grass = new Grass(5000, m_Terrains);
 
 	// Lighting
 	m_LightColor = glm::vec4(0.8f, 0.8f, 0.8f, 1.0f);

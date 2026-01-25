@@ -9,8 +9,8 @@ unsigned int Grass::m_VBO;
 unsigned int Grass::m_IBO;
 unsigned int Grass::m_TBO;
 
-Grass::Grass(int numInstances)
-	:m_NumInstances(numInstances)
+Grass::Grass(int numInstances, std::vector<Terrain*>& terrains)
+	:m_NumInstances(numInstances), m_Terrains(terrains)
 {
 	std::srand(std::time(NULL));
 
@@ -23,11 +23,11 @@ Grass::Grass(int numInstances)
 		float z = (std::rand() % (max - min)) + min;
 		float rotationAngle = (std::rand() % 360);
 
-		glm::vec3 translation = glm::vec3(x, 1.0f, z);
+		glm::vec3 translation = glm::vec3(x, m_Terrains[0]->GetTerrainHeight(x, z)+1.0f, z);
 
 		m_Transformations[i] = glm::mat4(1.0f);
-		m_Transformations[i] = glm::rotate(m_Transformations[i], glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
 		m_Transformations[i] = glm::translate(m_Transformations[i], translation);
+		m_Transformations[i] = glm::rotate(m_Transformations[i], glm::radians(rotationAngle), glm::vec3(0.0f, 1.0f, 0.0f));
 	}
 
 	CreateGLBuffers();
