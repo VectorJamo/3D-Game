@@ -76,7 +76,7 @@ GameState::GameState(Window* window)
 	m_GrassShader->SetUniformVec4f("u_SkyColor", m_SkyColor);
 
 	// Entities
-	m_Player = new Player(m_Window);
+	m_Player = new Player(m_Window, m_Terrains);
 
 	glEnable(GL_DEPTH_TEST);
 }

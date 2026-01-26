@@ -9,6 +9,8 @@
 #include "../graphics/Window.h"
 #include "../graphics/Camera.h"
 
+#include "../terrain/Terrain.h"
+
 class Player
 {
 private:
@@ -20,16 +22,19 @@ private:
 	static constexpr float m_PlayerSpeed = 20.0f;
 	static constexpr glm::vec3 m_UpVector = glm::vec3(0.0f, 1.0f, 0.0f);
 
-	static constexpr float m_Drag = 0.0f;
+	static constexpr float m_Drag = -3.0f;
 
 	glm::vec3 m_Direction; // Direction vector. What direction the player is looking at. (m_Position + m_Direction) gives the lookAt position
 
 	Camera* m_Camera;
 
+	std::vector<Terrain*>& m_Terrains;
+
 private:
 	glm::vec3 GetCameraPositionFromPlayer();
+
 public:
-	Player(Window* window);
+	Player(Window* window, std::vector<Terrain*>& terrains);
 	~Player();
 
 	void Update(double mouseX, double mouseY, double deltaTime);

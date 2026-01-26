@@ -1,7 +1,7 @@
 #include "Player.h"
 
-Player::Player(Window* window)
-	:m_Window(window)
+Player::Player(Window* window, std::vector<Terrain*>& terrains)
+	:m_Window(window), m_Terrains(terrains)
 {
 	m_Position = glm::vec3(0.0f, 10.0f, 0.0f);
 	m_Dimension = glm::vec3(2.0f, 5.0f, -2.0f);
@@ -18,12 +18,13 @@ Player::~Player()
 void Player::Update(double mouseX, double mouseY, double deltaTime)
 {
 	float newPosY = m_Position.y + m_Drag * deltaTime;
-	if (newPosY > 0.0f)
+	float terrainHeight = m_Terrains[0]->GetTerrainHeight(m_Position.x, m_Position.z);
+	if (newPosY > terrainHeight)
 	{
 		m_Position.y = newPosY;
 	}
 	else {
-		m_Position.y = 0.0f;
+		m_Position.y = terrainHeight;
 	}
 
 	m_Camera->Update(mouseX, mouseY, deltaTime);
